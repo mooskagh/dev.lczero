@@ -1,51 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LCZero Dev Portal</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        .status-box {
-            background: #f4f4f4;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        .logged-in {
-            background: #d4edda;
-            border-color: #c3e6cb;
-        }
-        .logged-out {
-            background: #f8d7da;
-            border-color: #f5c6cb;
-        }
-        .login-button {
-            display: inline-block;
-            background: #7289da;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        .login-button:hover {
-            background: #5b6eae;
-        }
-    </style>
-</head>
-<body>
+{% extends 'core/base.html' %}
+
+{% block content %}
     <h1>LCZero Dev Portal</h1>
     
-    <div class="status-box {% if is_authenticated %}logged-in{% else %}logged-out{% endif %}">
-        {% if is_authenticated %}
+    <div class="status-box {% if user.is_authenticated %}logged-in{% else %}logged-out{% endif %}">
+        {% if user.is_authenticated %}
             <h2>✅ Logged In</h2>
             <p><strong>Username:</strong> {{ user.username }}</p>
             {% if user.email %}
@@ -53,11 +12,11 @@
             {% endif %}
             <p><strong>User ID:</strong> {{ user.id }}</p>
             <p>Welcome to the LCZero Development Portal!</p>
-            <a href="{% url 'account_logout' %}" class="login-button" style="background: #dc3545;">Logout</a>
+            <a href="{% url 'account_logout' %}" class="login-button logout-button">Logout</a>
         {% else %}
             <h2>❌ Not Logged In</h2>
             <p>You are not currently logged in. Please login with your Discord account.</p>
-            <a href="{% url 'discord_login' %}" class="login-button">Login with Discord</a>
+            <a href="{% url 'discord_login' %}" class="login-button discord-button">Login with Discord</a>
         {% endif %}
     </div>
     
@@ -66,5 +25,4 @@
         <p>This is a minimal throwaway view to test authentication status.</p>
         <p>Phase 2 Discord integration is in progress.</p>
     </div>
-</body>
-</html>
+{% endblock %}

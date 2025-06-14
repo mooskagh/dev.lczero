@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}LCZero Dev Portal{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Top bar -->
+    <div class="top-bar">
+        <div class="logo">LCZero Dev Portal</div>
+        <div class="login-area">
+            {% if user.is_authenticated %}
+                {{ user.username }}
+            {% else %}
+                Not logged in
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Main container -->
+    <div class="main-container">
+        <!-- Left menu panel -->
+        <div class="menu-panel">
+            {% block menu %}
+            <div class="menu-item">Home</div>
+            <div class="menu-item">Blunderbase</div>
+            <div class="menu-item">Networks</div>
+            <div class="menu-item">Builds</div>
+            <div class="menu-item">Runs</div>
+            <div class="menu-item">Competition</div>
+            <div class="menu-item">URL Shortener</div>
+            {% endblock %}
+        </div>
+
+        <!-- Main content area -->
+        <div class="main-content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
