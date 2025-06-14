@@ -46,6 +46,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.discord",
     "core",
 ]
 
@@ -57,6 +62,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "lczero_dev_portal.urls"
@@ -128,3 +134,31 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom user model
 AUTH_USER_MODEL = "core.User"
+
+# Django Allauth Configuration
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+SITE_ID = 1
+
+# Discord OAuth2 Configuration
+SOCIALACCOUNT_PROVIDERS = {
+    "discord": {
+        "SCOPE": ["identify", "email", "guilds.members.read"],
+        "AUTH_PARAMS": {},
+        "OAUTH_PKCE_ENABLED": True,
+    }
+}
+
+# Allauth settings for Discord-only authentication
+ACCOUNT_LOGIN_METHODS = {"username"}
+ACCOUNT_SIGNUP_FIELDS = []
+ACCOUNT_SESSION_REMEMBER = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_LOGIN_ON_GET = False
+
+# Redirect URLs
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"

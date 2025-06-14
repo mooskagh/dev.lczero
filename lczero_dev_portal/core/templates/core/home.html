@@ -53,10 +53,11 @@
             {% endif %}
             <p><strong>User ID:</strong> {{ user.id }}</p>
             <p>Welcome to the LCZero Development Portal!</p>
+            <a href="{% url 'account_logout' %}" class="login-button" style="background: #dc3545;">Logout</a>
         {% else %}
             <h2>❌ Not Logged In</h2>
-            <p>You are not currently logged in. Discord authentication will be available soon!</p>
-            <a href="#" class="login-button">Login with Discord (Coming Soon)</a>
+            <p>You are not currently logged in. Please login with your Discord account.</p>
+            <a href="{% url 'discord_login' %}" class="login-button">Login with Discord</a>
         {% endif %}
     </div>
     
