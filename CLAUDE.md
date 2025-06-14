@@ -1,0 +1,1 @@
+- The project will be lczero_dev_portal, it will be a Django app hosted at dev.lczero.org, where various lc0-related dev reources be located (blunderbase, PR build artifacts, networks, runs, URL shortener configuration, competition watcher, etc). The authentication will be exclusively through LCZero discord.
