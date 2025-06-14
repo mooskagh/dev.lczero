@@ -37,6 +37,7 @@ Implement Discord OAuth2 authentication with environment-specific callback URLs 
 - Configure Django to use Discord-only authentication
 - Implement user registration/login flow
 - Handle Discord profile updates
+- **Implementation Note**: Login button placeholder ready in `core/templates/core/home.html:40` - update href from "#" to actual Discord OAuth URL
 
 ## Phase 3: Standalone Multifunctional Discord Bot
 
