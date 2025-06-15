@@ -8,6 +8,7 @@
   - Are there any useful tests that are easy to add and.
   - Run `just fix_and_check`, fix any issues.
   - Commit the changes to git with a meaningful message.
+  - Check that there are no uncommitted changes.
 - Always run `manage.py check --verbosity=2` and `manage.py migrate` to catch unapplied migrations and see all system messages including warnings.
 - Use Python type annotations, but not overdo it (fine to omit when takes too much boilerplate)
 - The python code should be idiomatic, elegant, and concise.
