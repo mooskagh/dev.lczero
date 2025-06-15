@@ -79,28 +79,22 @@ def get_menu_for_user(user, current_path: str = "") -> List[MenuGroup]:
             continue
 
         # Filter items within the group
-        filtered_items = []
-        for item in group.items or []:
-            if _has_permission(user, item.permissions):
-                # Mark as active if current path matches
-                item_copy = MenuItem(
-                    title=item.title,
-                    url=item.url,
-                    url_prefix=item.url_prefix,
-                    icon=item.icon,
-                    permissions=item.permissions,
-                )
-                filtered_items.append(item_copy)
+        filtered_items = [
+            item
+            for item in group.items or []
+            if _has_permission(user, item.permissions)
+        ]
 
         # Only include group if it has visible items
         if filtered_items:
-            group_copy = MenuGroup(
-                title=group.title,
-                icon=group.icon,
-                permissions=group.permissions,
-                items=filtered_items,
+            filtered_menu.append(
+                MenuGroup(
+                    title=group.title,
+                    icon=group.icon,
+                    permissions=group.permissions,
+                    items=filtered_items,
+                )
             )
-            filtered_menu.append(group_copy)
 
     return filtered_menu
 
@@ -117,8 +111,8 @@ def _has_permission(user, required_permissions: Optional[List[str]]) -> bool:
         True if user has access, False otherwise
     """
     if required_permissions is None:
-        # No specific permissions required - allow authenticated users
-        return user.is_authenticated
+        # No specific permissions required - allow all users
+        return True
 
     if not user.is_authenticated:
         return False
@@ -142,10 +136,7 @@ def get_active_menu_item(
         Active MenuItem or None
     """
     # Sort items by url_prefix length (longest first) for specific matching
-    all_items = []
-    for group in menu_groups:
-        for item in group.items or []:
-            all_items.append(item)
+    all_items = [item for group in menu_groups for item in group.items or []]
 
     # Sort by url_prefix length descending to match most specific path first
     all_items.sort(key=lambda x: len(x.url_prefix), reverse=True)
