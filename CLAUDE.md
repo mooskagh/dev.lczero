@@ -3,7 +3,11 @@
 - All python files should be formatted with black with line length=79, and with `--preview` to split long literals.
 - black, mypy, flake8 and isort are installed system-wide, so run them without `python -m` prefix.
 - Do not do `manage.py runserver`, developer has it running in a separate window
-- When creating the todo list for particular task, always add "manage.py check --verbosity=2, migrate, lint, isort, typecheck, format", "commit" as the last two items.
+- When creating the todo list for particular task, always add the following items in the end:
+  - Check for opportunities to make code more idiomatic, elegant, concise, beautiful, nice and short.
+  - Are there any useful tests that are easy to add and.
+  - Run check.sh, fix any issues.
+  - Commit the changes to git with a meaningful message.
 - Always run `manage.py check --verbosity=2` and `manage.py migrate` to catch unapplied migrations and see all system messages including warnings.
 - Use Python type annotations, but not overdo it (fine to omit when takes too much boilerplate)
 - The python code should be idiomatic, elegant, and concise.

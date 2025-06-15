@@ -48,18 +48,25 @@ class Command(BaseCommand):
                 identifier = f"User ID: {user_id}"
         except (SocialAccount.DoesNotExist, User.DoesNotExist) as e:
             error_messages = {
-                "discord_id": f"User with Discord ID '{discord_id}' does not exist. User must log in via Discord authentication first.",
-                "discord_username": f"User with Discord username '{discord_username}' does not exist. User must log in via Discord authentication first.",
-                "user_id": f"User with ID '{user_id}' does not exist."
+                "discord_id": (
+                    f"User with Discord ID '{discord_id}' does not exist. User"
+                    " must log in via Discord authentication first."
+                ),
+                "discord_username": (
+                    f"User with Discord username '{discord_username}' does not"
+                    " exist. User must log in via Discord authentication"
+                    " first."
+                ),
+                "user_id": f"User with ID '{user_id}' does not exist.",
             }
-            
+
             if discord_id:
                 key = "discord_id"
             elif discord_username:
                 key = "discord_username"
             else:
                 key = "user_id"
-                
+
             raise CommandError(error_messages[key]) from e
 
         if user.is_superuser:

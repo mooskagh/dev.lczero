@@ -43,7 +43,8 @@ class Command(BaseCommand):
         if not (client_id and client_secret):
             self.stdout.write(
                 self.style.ERROR(
-                    "DISCORD_CLIENT_ID and DISCORD_CLIENT_SECRET must be set in environment"
+                    "DISCORD_CLIENT_ID and DISCORD_CLIENT_SECRET must be set"
+                    " in environment"
                 )
             )
             return
@@ -75,7 +76,7 @@ class Command(BaseCommand):
 
         self.stdout.write(
             self.style.SUCCESS(
-                f"Discord OAuth2 setup complete!\n"
+                "Discord OAuth2 setup complete!\n"
                 f"Callback URL: http://{domain}/auth/discord/login/callback/"
             )
         )
