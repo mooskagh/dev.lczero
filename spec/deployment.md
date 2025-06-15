@@ -11,7 +11,7 @@
 * We'll need a subdirectory where we'll check out the code, and another subdirectory where we'll run the server (probably both independent git clones)
 * We want to set up the server to start through systemd
 * Use wsgi rather than asgi for now.
-* The repository is at <https://github.com/mooskagh/lczero_dev_portal>
+* The repository is at <https://github.com/mooskagh/dev.lczero>
 * Quite recent Python is installed, also there is pyenv.
 * In general, the system there is Debian trixie (i.e. current testing)
 
@@ -69,7 +69,7 @@ mkdir -p shared/artifacts
 
 ```bash
 cd ~/lczero_dev_portal/production
-git clone https://github.com/mooskagh/dev.lczero.git lczero_dev_portal
+git clone https://github.com/mooskagh/dev.lczero.git .
 ```
 
 ### 3.2 Create Python virtual environment
@@ -141,6 +141,9 @@ ALLOWED_HOSTS=dev.lczero.org,127.0.0.1,localhost
 # Discord OAuth2 Configuration (get from Discord Developer Portal)
 DISCORD_CLIENT_ID=your_discord_client_id
 DISCORD_CLIENT_SECRET=your_discord_client_secret
+
+# Static files configuration
+STATIC_ROOT=/home/lc0/lczero_dev_portal/shared/static
 
 # Artifacts Configuration
 ARTIFACTS_STORAGE_PATH=/home/lc0/lczero_dev_portal/shared/artifacts

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from typing import Any
 
 import environ
 
@@ -194,3 +195,60 @@ ARTIFACTS_PR_RETENTION_DAYS = env.int("ARTIFACTS_PR_RETENTION_DAYS", 7)
 ARTIFACTS_MAX_FILE_SIZE = env.int(
     "ARTIFACTS_MAX_FILE_SIZE", 1024 * 1024 * 1024
 )  # 1GB
+
+# Logging configuration
+LOGGING: dict[str, Any] = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": (
+                "{levelname} {asctime} {module} {process:d} {thread:d} "
+                "{message}"
+            ),
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "allauth": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "allauth.socialaccount": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
+}
+
+# Add file logging if LOG_FILE is specified
+try:
+    log_file = env.str("LOG_FILE")
+    LOGGING["handlers"]["file"] = {
+        "class": "logging.FileHandler",
+        "filename": log_file,
+        "formatter": "verbose",
+    }
+    # Add file handler to all existing handlers
+    LOGGING["root"]["handlers"].append("file")
+    for logger in LOGGING["loggers"].values():
+        logger["handlers"].append("file")
+except environ.ImproperlyConfigured:
+    pass
