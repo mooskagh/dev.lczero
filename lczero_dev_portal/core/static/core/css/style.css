@@ -132,9 +132,9 @@ a:hover {
 
 /* Menu items */
 .menu-item {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: var(--menu-item-padding);
-    padding-left: calc(var(--icon-size) + 15px);
     margin: 0;
     cursor: pointer;
     background: var(--gradient-menu-item);
@@ -150,12 +150,9 @@ a:hover {
     box-shadow: none;
 }
 
-.menu-item:before {
-    content: "";
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-50%);
+.menu-icon {
+    margin-right: 5px;
+    flex-shrink: 0;
     width: var(--icon-size);
     height: var(--icon-size);
 }

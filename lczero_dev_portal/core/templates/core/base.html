@@ -25,10 +25,20 @@
     <div class="main-container">
         <!-- Left menu panel -->
         <div class="menu-panel">
+            <!-- Load SVG icons -->
+            {% load static %}
+            <div style="display: none;">
+                {% include "core/icons/menu-icons.svg" %}
+            </div>
             {% block menu %}
             {% for group in menu_groups %}
                 {% for item in group.items %}
                     <a href="{{ item.url }}" class="menu-item{% if active_menu_item and active_menu_item.url_prefix == item.url_prefix %} selected{% endif %}">
+                        {% if item.icon %}
+                            <svg class="menu-icon" width="16" height="16">
+                                <use href="#icon-{{ item.icon }}"></use>
+                            </svg>
+                        {% endif %}
                         {{ item.title }}
                     </a>
                 {% endfor %}

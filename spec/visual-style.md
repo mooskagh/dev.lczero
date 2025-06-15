@@ -29,6 +29,7 @@
       * When selected, bg color is #aaa, and button is "pressed"
       * Are 100% for top level, and 3px left-right margins for level 2, with background color #c1c1c1
       * Every menu item may have a small 16×16px icon on the left side. If there is no icon, keep space for it.
+      * Icon should be multi-color, and every icon should have different color scheme.
 * The rest of the page is for content
   * Background color is #f0f0f0
 
