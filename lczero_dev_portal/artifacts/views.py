@@ -47,7 +47,9 @@ def parse_upload_parameters(request: HttpRequest) -> Dict[str, Any]:
             else timezone.now()
         ),
         "pr_number": (
-            int(request.POST["pr_number"]) if request.POST.get("pr_number") else None
+            int(request.POST["pr_number"])
+            if request.POST.get("pr_number")
+            else None
         ),
         "tag_description": request.POST.get("tag_description") or None,
     }
@@ -81,7 +83,7 @@ def delete_existing_artifact(
         )
     except Artifact.DoesNotExist:
         return
-    
+
     delete_file_if_exists(existing_artifact.file_path)
     existing_artifact.delete()
 
@@ -110,7 +112,8 @@ class UploadView(View):
             return JsonResponse(
                 {
                     "error": (
-                        f"File too large. Maximum size: {settings.ARTIFACTS_MAX_FILE_SIZE} bytes"
+                        "File too large. Maximum size:"
+                        f" {settings.ARTIFACTS_MAX_FILE_SIZE} bytes"
                     )
                 },
                 status=413,
@@ -135,7 +138,8 @@ class UploadView(View):
             )
 
             logger.info(
-                f"Uploaded artifact: {params['filename']} for {params['commit_hash']} ({params['target_id']})"
+                f"Uploaded artifact: {params['filename']} for"
+                f" {params['commit_hash']} ({params['target_id']})"
             )
 
             return JsonResponse(
@@ -160,7 +164,9 @@ class UploadView(View):
 
 
 class DownloadView(View):
-    def get(self, request: HttpRequest, artifact_id: int) -> HttpResponseRedirect:
+    def get(
+        self, request: HttpRequest, artifact_id: int
+    ) -> HttpResponseRedirect:
         artifact = get_object_or_404(Artifact, id=artifact_id)
 
         if artifact.revision.is_hidden:
