@@ -139,6 +139,10 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# Set STATIC_ROOT only if provided in environment
+if static_root := env.str("STATIC_ROOT", default=None):
+    STATIC_ROOT = static_root
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
