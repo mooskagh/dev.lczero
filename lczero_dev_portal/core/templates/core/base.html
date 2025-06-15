@@ -26,13 +26,13 @@
         <!-- Left menu panel -->
         <div class="menu-panel">
             {% block menu %}
-            <div class="menu-item">Home</div>
-            <div class="menu-item">Blunderbase</div>
-            <div class="menu-item">Networks</div>
-            <div class="menu-item">Builds</div>
-            <div class="menu-item">Runs</div>
-            <div class="menu-item">Competition</div>
-            <div class="menu-item">URL Shortener</div>
+            {% for group in menu_groups %}
+                {% for item in group.items %}
+                    <a href="{{ item.url }}" class="menu-item{% if active_menu_item and active_menu_item.url_prefix == item.url_prefix %} selected{% endif %}">
+                        {{ item.title }}
+                    </a>
+                {% endfor %}
+            {% endfor %}
             {% endblock %}
         </div>
 
