@@ -19,6 +19,11 @@ check-mypy:
     @echo "Running mypy..."
     mypy lczero_dev_portal
 
+# Run Django tests
+check-tests:
+    @echo "Running Django tests..."
+    cd lczero_dev_portal && python manage.py test
+
 # Run isort import sorting
 fix-isort:
     @echo "Running isort..."
@@ -30,7 +35,7 @@ fix-black:
     black --preview --line-length=79 --enable-unstable-feature string_processing lczero_dev_portal
 
 # Run all read-only checks
-check: check-django check-flake8 check-mypy
+check: check-django check-flake8 check-mypy check-tests
     @echo "All checks passed!"
 
 # Run all formatting fixes
