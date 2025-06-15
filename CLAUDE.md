@@ -3,7 +3,7 @@
 - All python files should be formatted with black with line length=79, and with `--preview` to split long literals.
 - black, mypy, flake8 and isort are installed system-wide, so run them without `python -m` prefix.
 - Do not do `manage.py runserver`, developer has it running in a separate window
-- When creating the todo list for particular task, always add "lint, isort, typecheck, format, commit" as the last item.
+- When creating the todo list for particular task, always add "manage.py check, lint, isort, typecheck, format", "commit" as the last two items.
 - Use Python type annotations, but not overdo it (fine to omit when takes too much boilerplate)
 - The python code should be idiomatic, elegant, and concise.
 
