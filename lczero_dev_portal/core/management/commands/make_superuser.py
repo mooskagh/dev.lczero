@@ -49,6 +49,7 @@ class Command(BaseCommand):
                 user = social_account.user
                 identifier = f"Discord username: {discord_username}"
             else:
+                assert user_id is not None
                 user = User.objects.get(id=user_id)
                 identifier = f"User ID: {user_id}"
         except (SocialAccount.DoesNotExist, User.DoesNotExist) as e:

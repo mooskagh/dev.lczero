@@ -36,7 +36,10 @@ def authenticate_upload_token(request: HttpRequest) -> bool:
 
 
 def parse_upload_parameters(request: HttpRequest) -> Dict[str, Any]:
-    uploaded_file: UploadedFile = request.FILES["file"]
+    file_data = request.FILES["file"]
+    if isinstance(file_data, list):
+        raise ValueError("Multiple files not supported")
+    uploaded_file: UploadedFile = file_data
 
     return {
         "file": uploaded_file,
@@ -109,7 +112,12 @@ class UploadView(View):
         if "file" not in request.FILES:
             return JsonResponse({"error": "No file provided"}, status=400)
 
-        uploaded_file: UploadedFile = request.FILES["file"]
+        file_data = request.FILES["file"]
+        if isinstance(file_data, list):
+            return JsonResponse(
+                {"error": "Multiple files not supported"}, status=400
+            )
+        uploaded_file: UploadedFile = file_data
         if uploaded_file.size > settings.ARTIFACTS_MAX_FILE_SIZE:
             return JsonResponse(
                 {
