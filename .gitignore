@@ -4,6 +4,9 @@ venv/
 # Environment variables
 .env
 
+# Temporary files and development artifacts
+tmp/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
