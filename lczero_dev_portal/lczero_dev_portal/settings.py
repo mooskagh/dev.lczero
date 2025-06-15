@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.discord",
     "core",
+    "artifacts",
 ]
 
 MIDDLEWARE = [
@@ -162,3 +163,17 @@ SOCIALACCOUNT_LOGIN_ON_GET = False
 # Redirect URLs
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+# Artifacts configuration
+ARTIFACTS_STORAGE_PATH = env.str("ARTIFACTS_STORAGE_PATH", "/var/artifacts/")
+ARTIFACTS_UPLOAD_TOKEN = env.str(
+    "ARTIFACTS_UPLOAD_TOKEN", default="dev-token-change-in-production"
+)
+ARTIFACTS_DOWNLOAD_URL_PREFIX = env.str(
+    "ARTIFACTS_DOWNLOAD_URL_PREFIX", "/static/artifacts"
+)
+ARTIFACTS_RETENTION_DAYS = env.int("ARTIFACTS_RETENTION_DAYS", 30)
+ARTIFACTS_PR_RETENTION_DAYS = env.int("ARTIFACTS_PR_RETENTION_DAYS", 7)
+ARTIFACTS_MAX_FILE_SIZE = env.int(
+    "ARTIFACTS_MAX_FILE_SIZE", 1024 * 1024 * 1024
+)  # 1GB

@@ -18,7 +18,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="user",
             name="discord_id",
-            field=models.CharField(blank=True, max_length=20, null=True, unique=True),
+            field=models.CharField(
+                blank=True, max_length=20, null=True, unique=True
+            ),
         ),
         migrations.AddField(
             model_name="user",
