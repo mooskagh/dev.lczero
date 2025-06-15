@@ -3,7 +3,7 @@ from pathlib import Path
 from django.conf import settings
 
 
-def generate_file_path(revision_id, target_id, filename):
+def generate_file_path(revision_id: int, target_id: str, filename: str) -> str:
     """
     Generate file path for storing artifacts.
     Format: {revision_id}/{target_id}/{filename}
@@ -11,7 +11,7 @@ def generate_file_path(revision_id, target_id, filename):
     return f"{revision_id}/{target_id}/{filename}"
 
 
-def get_full_file_path(file_path):
+def get_full_file_path(file_path: str) -> Path:
     """
     Get full filesystem path for a file_path.
     """
@@ -19,7 +19,7 @@ def get_full_file_path(file_path):
     return storage_path / file_path
 
 
-def ensure_directory_exists(file_path):
+def ensure_directory_exists(file_path: str) -> Path:
     """
     Ensure the directory structure exists for a file path.
     """
@@ -28,7 +28,7 @@ def ensure_directory_exists(file_path):
     return full_path
 
 
-def delete_file_if_exists(file_path):
+def delete_file_if_exists(file_path: str) -> bool:
     """
     Delete a file if it exists.
     """
@@ -42,7 +42,7 @@ def delete_file_if_exists(file_path):
     return False
 
 
-def cleanup_empty_directories(file_path):
+def cleanup_empty_directories(file_path: str) -> None:
     """
     Remove empty parent directories after file deletion.
     """

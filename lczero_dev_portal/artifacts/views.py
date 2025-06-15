@@ -43,13 +43,11 @@ def parse_upload_parameters(request: HttpRequest) -> Dict[str, Any]:
         "commit_hash": request.POST["commit_hash"],
         "revision_datetime": (
             timezone.datetime.fromisoformat(request.POST["datetime"])
-            if "datetime" in request.POST
+            if request.POST.get("datetime")
             else timezone.now()
         ),
         "pr_number": (
-            int(request.POST["pr_number"])
-            if "pr_number" in request.POST
-            else None
+            int(request.POST["pr_number"]) if request.POST.get("pr_number") else None
         ),
         "tag_description": request.POST.get("tag_description") or None,
     }
@@ -76,18 +74,19 @@ def create_revision_and_target(
 
 def delete_existing_artifact(
     revision: Revision, target: Target, filename: str
-):
+) -> None:
     try:
         existing_artifact = Artifact.objects.get(
             revision=revision, target=target, filename=filename
         )
-        delete_file_if_exists(existing_artifact.file_path)
-        existing_artifact.delete()
     except Artifact.DoesNotExist:
-        pass
+        return
+    
+    delete_file_if_exists(existing_artifact.file_path)
+    existing_artifact.delete()
 
 
-def save_uploaded_file(uploaded_file, file_path: str):
+def save_uploaded_file(uploaded_file, file_path: str) -> None:
     full_path = ensure_directory_exists(file_path)
 
     with open(full_path, "wb") as destination:
@@ -121,7 +120,7 @@ class UploadView(View):
             params = parse_upload_parameters(request)
             revision, target = create_revision_and_target(params)
             file_path = generate_file_path(
-                revision.id, target.id, params["filename"]
+                revision.pk, target.pk, params["filename"]
             )
 
             delete_existing_artifact(revision, target, params["filename"])
@@ -142,7 +141,7 @@ class UploadView(View):
             return JsonResponse(
                 {
                     "success": True,
-                    "artifact_id": artifact.id,
+                    "artifact_id": artifact.pk,
                     "file_path": file_path,
                     "size": params["file"].size,
                 }
@@ -161,7 +160,7 @@ class UploadView(View):
 
 
 class DownloadView(View):
-    def get(self, request: HttpRequest, artifact_id: int):
+    def get(self, request: HttpRequest, artifact_id: int) -> HttpResponseRedirect:
         artifact = get_object_or_404(Artifact, id=artifact_id)
 
         if artifact.revision.is_hidden:

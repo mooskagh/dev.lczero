@@ -11,7 +11,15 @@ class TargetAdmin(admin.ModelAdmin):
 
 @admin.register(Revision)
 class RevisionAdmin(admin.ModelAdmin):
-    list_display = ['commit_hash', 'datetime', 'pr_number', 'tag_description', 'is_pinned', 'is_scheduled_for_deletion', 'is_hidden']
+    list_display = [
+        'commit_hash',
+        'datetime',
+        'pr_number',
+        'tag_description',
+        'is_pinned',
+        'is_scheduled_for_deletion',
+        'is_hidden',
+    ]
     list_filter = ['is_pinned', 'is_scheduled_for_deletion', 'is_hidden', 'datetime']
     search_fields = ['commit_hash', 'tag_description']
     readonly_fields = ['created_at']

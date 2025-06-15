@@ -40,7 +40,7 @@ class Command(BaseCommand):
         client_id = os.environ.get("DISCORD_CLIENT_ID")
         client_secret = os.environ.get("DISCORD_CLIENT_SECRET")
 
-        if not client_id or not client_secret:
+        if not (client_id and client_secret):
             self.stdout.write(
                 self.style.ERROR(
                     "DISCORD_CLIENT_ID and DISCORD_CLIENT_SECRET must be set in environment"
