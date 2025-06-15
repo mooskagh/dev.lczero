@@ -1,5 +1,5 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 
 class Target(models.Model):
@@ -40,7 +40,10 @@ class Artifact(models.Model):
         unique_together = ["revision", "target", "filename"]
 
     def __str__(self):
-        return f"{self.filename} ({self.revision.commit_hash[:8]} - {self.target.id})"
+        return (
+            f"{self.filename} "
+            f"({self.revision.commit_hash[:8]} - {self.target.id})"
+        )
 
     @property
     def download_url(self):
