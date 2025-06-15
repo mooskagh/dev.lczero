@@ -7,7 +7,7 @@ class Target(models.Model):
     name = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name} ({self.id})"
 
 
@@ -21,7 +21,7 @@ class Revision(models.Model):
     is_hidden = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.commit_hash[:8]} ({self.datetime})"
 
     class Meta:
@@ -39,14 +39,14 @@ class Artifact(models.Model):
     class Meta:
         unique_together = ["revision", "target", "filename"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"{self.filename} "
             f"({self.revision.commit_hash[:8]} - {self.target.id})"
         )
 
     @property
-    def download_url(self):
+    def download_url(self) -> str:
         download_prefix = getattr(
             settings, "ARTIFACTS_DOWNLOAD_URL_PREFIX", "/static/artifacts"
         )

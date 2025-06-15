@@ -1,7 +1,9 @@
 import logging
+from datetime import datetime
 from typing import Any, Dict, Tuple
 
 from django.conf import settings
+from django.core.files.uploadedfile import UploadedFile
 from django.http import (
     Http404,
     HttpRequest,
@@ -34,7 +36,7 @@ def authenticate_upload_token(request: HttpRequest) -> bool:
 
 
 def parse_upload_parameters(request: HttpRequest) -> Dict[str, Any]:
-    uploaded_file = request.FILES["file"]
+    uploaded_file: UploadedFile = request.FILES["file"]
 
     return {
         "file": uploaded_file,
@@ -42,7 +44,7 @@ def parse_upload_parameters(request: HttpRequest) -> Dict[str, Any]:
         "target_id": request.POST["target_id"],
         "commit_hash": request.POST["commit_hash"],
         "revision_datetime": (
-            timezone.datetime.fromisoformat(request.POST["datetime"])
+            datetime.fromisoformat(request.POST["datetime"])
             if request.POST.get("datetime")
             else timezone.now()
         ),
@@ -88,7 +90,7 @@ def delete_existing_artifact(
     existing_artifact.delete()
 
 
-def save_uploaded_file(uploaded_file, file_path: str) -> None:
+def save_uploaded_file(uploaded_file: Any, file_path: str) -> None:
     full_path = ensure_directory_exists(file_path)
 
     with open(full_path, "wb") as destination:
@@ -107,7 +109,7 @@ class UploadView(View):
         if "file" not in request.FILES:
             return JsonResponse({"error": "No file provided"}, status=400)
 
-        uploaded_file = request.FILES["file"]
+        uploaded_file: UploadedFile = request.FILES["file"]
         if uploaded_file.size > settings.ARTIFACTS_MAX_FILE_SIZE:
             return JsonResponse(
                 {

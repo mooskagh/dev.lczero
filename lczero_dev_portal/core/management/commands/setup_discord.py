@@ -1,14 +1,15 @@
 import os
+from typing import Any
 
 from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 
 
 class Command(BaseCommand):
     help = "Setup Discord OAuth2 integration"
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument(
             "--domain",
             type=str,
@@ -16,7 +17,7 @@ class Command(BaseCommand):
             help="Domain for the site (default: 127.0.0.1:8000)",
         )
 
-    def handle(self, *args, **options):
+    def handle(self, *args: Any, **options: Any) -> None:
         domain = options["domain"]
 
         # Update Site configuration

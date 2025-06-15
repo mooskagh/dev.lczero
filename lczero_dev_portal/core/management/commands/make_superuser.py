@@ -1,12 +1,18 @@
+from typing import Any
+
 from allauth.socialaccount.models import SocialAccount
 from core.models import User
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import (
+    BaseCommand,
+    CommandError,
+    CommandParser,
+)
 
 
 class Command(BaseCommand):
     help = "Make a user a superuser by Discord ID or Django User ID"
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: CommandParser) -> None:
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument(
             "--discord-id",
@@ -24,7 +30,7 @@ class Command(BaseCommand):
             help="Django User model ID (numeric)",
         )
 
-    def handle(self, *args, **options):
+    def handle(self, *args: Any, **options: Any) -> None:
         discord_id = options.get("discord_id")
         discord_username = options.get("discord_username")
         user_id = options.get("user_id")
