@@ -6,16 +6,28 @@
 <h1>Build Artifacts</h1>
 
 {% if can_manage %}
-<div class="admin-controls">
-    <p><em>Admin controls will be available soon (pin, hide, schedule for deletion)</em></p>
-</div>
+<form method="post" action="{% url 'artifacts:bulk_manage' %}">
+    {% csrf_token %}
+    <div class="admin-controls">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <small>Use H (hide), D (delete), P (pin) checkboxes to manage revisions</small>
+    </div>
+</form>
+
+<form method="post" action="{% url 'artifacts:run_janitor' %}" style="display: inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-warning" onclick="return confirm('Run janitor task now? This will delete old artifacts according to retention policy.')">Run Janitor Now</button>
+</form>
+
+<form method="post" action="{% url 'artifacts:bulk_manage' %}">
+    {% csrf_token %}
 {% endif %}
 
 <div class="artifacts-table-container">
     <table class="artifacts-table">
         <thead>
             <tr>
-                {% if can_manage %}<th></th>{% endif %}
+                {% if can_manage %}<th>Admin</th>{% endif %}
                 <th>Commit</th>
                 <th>Date</th>
                 <th>PR</th>
@@ -31,7 +43,20 @@
             {% for row in matrix %}
             <tr class="revision-row {% if row.revision.is_pinned %}pinned{% endif %} {% if row.revision.is_scheduled_for_deletion %}scheduled{% endif %}">
                 {% if can_manage %}
-                <td><input type="checkbox" name="revision_ids" value="{{ row.revision.id }}" form="bulk-actions-form"></td>
+                <td class="admin-controls-cell">
+                    <label class="toggle-btn" title="Hidden">
+                        <input type="checkbox" name="revision_{{ row.revision.id }}_hidden" {% if row.revision.is_hidden %}checked{% endif %}>
+                        <span>H</span>
+                    </label>
+                    <label class="toggle-btn" title="Scheduled for deletion">
+                        <input type="checkbox" name="revision_{{ row.revision.id }}_deletion" {% if row.revision.is_scheduled_for_deletion %}checked{% endif %}>
+                        <span>D</span>
+                    </label>
+                    <label class="toggle-btn" title="Pinned">
+                        <input type="checkbox" name="revision_{{ row.revision.id }}_pinned" {% if row.revision.is_pinned %}checked{% endif %}>
+                        <span>P</span>
+                    </label>
+                </td>
                 {% endif %}
                 <td><code>{{ row.revision.commit_hash|slice:":8" }}</code></td>
                 <td>{{ row.revision.datetime|date:"Y-m-d H:i:s" }}</td>
@@ -69,6 +94,10 @@
         </tbody>
     </table>
 </div>
+
+{% if can_manage %}
+</form>
+{% endif %}
 
 {% if not matrix %}
 <div class="empty-state">
@@ -166,6 +195,44 @@
     text-align: center;
     padding: 40px;
     color: #666;
+}
+
+.admin-controls-cell {
+    white-space: nowrap;
+}
+
+.toggle-btn {
+    display: inline-block;
+    margin: 0 2px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle-btn span {
+    display: inline-block;
+    padding: 4px 8px;
+    background: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #666;
+    transition: all 0.2s ease;
+}
+
+.toggle-btn:hover span {
+    background: #e9ecef;
+    border-color: #999;
+}
+
+.toggle-btn input[type="checkbox"]:checked + span {
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.toggle-btn input[type="checkbox"] {
+    display: none;
 }
 </style>
 

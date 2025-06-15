@@ -64,6 +64,12 @@ class Revision(models.Model):
 
     class Meta:
         ordering = ["-datetime"]
+        permissions = [
+            (
+                "manage_revisions",
+                "Can pin, hide, and schedule revisions for deletion",
+            ),
+        ]
 
 
 class Artifact(models.Model):

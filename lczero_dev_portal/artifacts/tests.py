@@ -26,3 +26,29 @@ class ArtifactsViewTests(TestCase):
         response = self.client.get(reverse("artifacts:table"))
         self.assertEqual(response.status_code, 200)
         # Should not crash on missing admin URLs if user has permissions
+
+    def test_manage_revisions_permission_exists(self):
+        """Test that the manage_revisions permission was created"""
+        from django.contrib.auth.models import Permission
+
+        permission = Permission.objects.filter(
+            codename="manage_revisions", content_type__app_label="artifacts"
+        ).first()
+        self.assertIsNotNone(permission)
+        if permission:
+            self.assertEqual(
+                permission.name,
+                "Can pin, hide, and schedule revisions for deletion",
+            )
+
+    def test_bulk_manage_requires_permission(self):
+        """Test that bulk manage view requires manage_revisions permission"""
+        response = self.client.post("/artifacts/manage/")
+        # Should redirect to login since user lacks permission
+        self.assertEqual(response.status_code, 302)
+
+    def test_run_janitor_requires_permission(self):
+        """Test that janitor view requires manage_revisions permission"""
+        response = self.client.post("/artifacts/janitor/")
+        # Should redirect to login since user lacks permission
+        self.assertEqual(response.status_code, 302)

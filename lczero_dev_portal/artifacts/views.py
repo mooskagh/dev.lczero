@@ -3,6 +3,8 @@ from datetime import datetime
 from typing import Any, Dict, Tuple
 
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
 from django.core.files.uploadedfile import UploadedFile
 from django.http import (
     Http404,
@@ -10,7 +12,7 @@ from django.http import (
     HttpResponseRedirect,
     JsonResponse,
 )
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -204,3 +206,47 @@ def artifacts_table_view(request: HttpRequest):
     }
 
     return render(request, "artifacts/table.html", context)
+
+
+@permission_required("artifacts.manage_revisions")
+def bulk_manage_view(request: HttpRequest):
+    if request.method != "POST":
+        return redirect("artifacts:table")
+
+    # Get all revision updates from form
+    revision_updates: dict[int, dict[str, bool]] = {}
+    for key, value in request.POST.items():
+        if key.startswith("revision_"):
+            parts = key.split("_")
+            if len(parts) == 3:  # revision_{id}_{field}
+                revision_id = int(parts[1])
+                field = parts[2]
+                if revision_id not in revision_updates:
+                    revision_updates[revision_id] = {}
+                revision_updates[revision_id][field] = value == "on"
+
+    # Update revisions
+    count = 0
+    for revision_id, updates in revision_updates.items():
+        fields = {
+            "is_hidden": updates.get("hidden", False),
+            "is_scheduled_for_deletion": updates.get("deletion", False),
+            "is_pinned": updates.get("pinned", False),
+        }
+        Revision.objects.filter(id=revision_id).update(**fields)
+        count += 1
+
+    messages.success(request, f"Updated {count} revision(s).")
+    return redirect("artifacts:table")
+
+
+@permission_required("artifacts.manage_revisions")
+def run_janitor_view(request: HttpRequest):
+    if request.method != "POST":
+        return redirect("artifacts:table")
+
+    # TODO: Implement actual janitor logic in Phase 5
+    messages.info(
+        request, "Janitor functionality will be implemented in Phase 5."
+    )
+    return redirect("artifacts:table")
