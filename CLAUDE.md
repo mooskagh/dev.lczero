@@ -6,13 +6,13 @@
 - When creating the todo list for particular task, always add the following items in the end:
   - Check for opportunities to make code more idiomatic, elegant, concise, beautiful, nice and short.
   - Are there any useful tests that are easy to add and.
-  - Run check.sh, fix any issues.
+  - Run `just fix_and_check`, fix any issues.
   - Commit the changes to git with a meaningful message.
 - Always run `manage.py check --verbosity=2` and `manage.py migrate` to catch unapplied migrations and see all system messages including warnings.
 - Use Python type annotations, but not overdo it (fine to omit when takes too much boilerplate)
 - The python code should be idiomatic, elegant, and concise.
 
 ## Development Setup
-- Database: PostgreSQL via Docker Compose (developer starts with `./start-db.sh` in separate terminal)
+- Database: PostgreSQL via Docker Compose (developer starts with `just start-db` in separate terminal)
 - Environment variables configured via django-environ (see .env.sample)
 - Django project located in `lczero_dev_portal/` subdirectory

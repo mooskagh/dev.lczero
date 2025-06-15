@@ -1,7 +1,6 @@
 from allauth.socialaccount.models import SocialAccount
-from django.core.management.base import BaseCommand, CommandError
-
 from core.models import User
+from django.core.management.base import BaseCommand, CommandError
 
 
 class Command(BaseCommand):
