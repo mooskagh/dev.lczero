@@ -10,12 +10,13 @@ from django.http import (
     HttpResponseRedirect,
     JsonResponse,
 )
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
+from .helpers import get_artifacts_table_data
 from .models import Artifact, Revision, Target
 from .utils import (
     delete_file_if_exists,
@@ -187,3 +188,19 @@ class DownloadView(View):
             raise Http404("File not found")
 
         return HttpResponseRedirect(artifact.download_url)
+
+
+def artifacts_table_view(request: HttpRequest):
+    targets, matrix = get_artifacts_table_data()
+
+    context = {
+        "targets": targets,
+        "matrix": matrix,
+        "can_manage": (
+            request.user.is_authenticated
+            and hasattr(request.user, "has_perm")
+            and request.user.has_perm("artifacts.manage_revisions")
+        ),
+    }
+
+    return render(request, "artifacts/table.html", context)
