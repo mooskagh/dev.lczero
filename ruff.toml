@@ -1,0 +1,21 @@
+# Ruff configuration for lczero_dev_portal
+line-length = 79
+
+[lint]
+# Enable import sorting (replaces isort)
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+
+[format]
+# Use double quotes for strings
+quote-style = "double"
+
+# Enable preview features for string processing
+preview = true

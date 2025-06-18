@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Optional
 
 from .models import Artifact, Revision, Target
 
@@ -7,12 +7,12 @@ from .models import Artifact, Revision, Target
 @dataclass
 class ArtifactsTableRow:
     revision: Revision
-    artifacts: List[Optional[Artifact]]
+    artifacts: list[Optional[Artifact]]
 
 
 def get_artifacts_table_data(
     limit: int = 50,
-) -> tuple[List[Target], List[ArtifactsTableRow]]:
+) -> tuple[list[Target], list[ArtifactsTableRow]]:
     revisions = Revision.objects.filter(is_hidden=False).prefetch_related(
         "artifact_set__target"
     )[:limit]

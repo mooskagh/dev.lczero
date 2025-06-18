@@ -6,7 +6,7 @@ providing a mikrotik webfig-like two-level navigation system.
 """
 
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Optional
 
 
 @dataclass
@@ -17,7 +17,7 @@ class MenuItem:
     url: str
     url_prefix: str
     icon: Optional[str] = None
-    permissions: Optional[List[str]] = None
+    permissions: Optional[list[str]] = None
 
 
 @dataclass
@@ -26,8 +26,8 @@ class MenuGroup:
 
     title: str
     icon: Optional[str] = None
-    permissions: Optional[List[str]] = None
-    items: Optional[List[MenuItem]] = None
+    permissions: Optional[list[str]] = None
+    items: Optional[list[MenuItem]] = None
 
     def __post_init__(self):
         if self.items is None:
@@ -60,7 +60,7 @@ MENU_STRUCTURE = [
 ]
 
 
-def get_menu_for_user(user, current_path: str = "") -> List[MenuGroup]:
+def get_menu_for_user(user, current_path: str = "") -> list[MenuGroup]:
     """
     Get filtered menu structure for a specific user based on permissions.
 
@@ -99,7 +99,7 @@ def get_menu_for_user(user, current_path: str = "") -> List[MenuGroup]:
     return filtered_menu
 
 
-def _has_permission(user, required_permissions: Optional[List[str]]) -> bool:
+def _has_permission(user, required_permissions: Optional[list[str]]) -> bool:
     """
     Check if user has required permissions.
 
@@ -123,7 +123,7 @@ def _has_permission(user, required_permissions: Optional[List[str]]) -> bool:
 
 
 def get_active_menu_item(
-    menu_groups: List[MenuGroup], current_path: str
+    menu_groups: list[MenuGroup], current_path: str
 ) -> Optional[MenuItem]:
     """
     Find the currently active menu item based on URL path.

@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime
-from typing import Any, Dict, Tuple
+from typing import Any
 
 from django.conf import settings
 from django.contrib import messages
@@ -33,7 +33,7 @@ def authenticate_upload_token(request: HttpRequest) -> bool:
     return token == settings.ARTIFACTS_UPLOAD_TOKEN
 
 
-def parse_upload_parameters(request: HttpRequest) -> Dict[str, Any]:
+def parse_upload_parameters(request: HttpRequest) -> dict[str, Any]:
     file_data = request.FILES["file"]
     if isinstance(file_data, list):
         raise ValueError("Multiple files not supported")
@@ -59,8 +59,8 @@ def parse_upload_parameters(request: HttpRequest) -> Dict[str, Any]:
 
 
 def create_revision_and_target(
-    params: Dict[str, Any],
-) -> Tuple[Revision, Target]:
+    params: dict[str, Any],
+) -> tuple[Revision, Target]:
     target, _ = Target.objects.get_or_create(
         id=params["target_id"], defaults={"name": params["target_id"]}
     )
@@ -150,14 +150,12 @@ class UploadView(View):
                 f" {params['commit_hash']} ({params['target_id']})"
             )
 
-            return JsonResponse(
-                {
-                    "success": True,
-                    "artifact_id": artifact.pk,
-                    "file_path": file_path,
-                    "size": params["file"].size,
-                }
-            )
+            return JsonResponse({
+                "success": True,
+                "artifact_id": artifact.pk,
+                "file_path": file_path,
+                "size": params["file"].size,
+            })
 
         except (KeyError, ValueError) as e:
             return JsonResponse(

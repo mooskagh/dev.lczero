@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("core", "0002_user_avatar_url_user_discord_id_and_more"),
     ]

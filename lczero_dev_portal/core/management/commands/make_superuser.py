@@ -1,12 +1,13 @@
 from typing import Any
 
 from allauth.socialaccount.models import SocialAccount
-from core.models import User
 from django.core.management.base import (
     BaseCommand,
     CommandError,
     CommandParser,
 )
+
+from core.models import User
 
 
 class Command(BaseCommand):

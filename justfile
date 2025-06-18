@@ -9,10 +9,10 @@ check-django:
     @echo "Running Django system checks..."
     cd lczero_dev_portal && python manage.py check --verbosity=2
 
-# Run flake8 linting
-check-flake8:
-    @echo "Running flake8..."
-    flake8 lczero_dev_portal
+# Run ruff linting
+check-ruff:
+    @echo "Running ruff linting..."
+    ruff check lczero_dev_portal
 
 # Run mypy type checking
 check-mypy:
@@ -24,22 +24,18 @@ check-tests:
     @echo "Running Django tests..."
     cd lczero_dev_portal && python manage.py test
 
-# Run isort import sorting
-fix-isort:
-    @echo "Running isort..."
-    isort lczero_dev_portal
-
-# Run black code formatting
-fix-black:
-    @echo "Running black..."
-    black --preview --line-length=79 --enable-unstable-feature string_processing lczero_dev_portal
+# Run ruff formatting and import sorting
+fix-ruff:
+    @echo "Running ruff formatting..."
+    ruff format lczero_dev_portal
+    ruff check --fix lczero_dev_portal
 
 # Run all read-only checks
-check: check-django check-flake8 check-mypy check-tests
+check: check-django check-ruff check-mypy check-tests
     @echo "All checks passed!"
 
 # Run all formatting fixes
-fix: fix-isort fix-black
+fix: fix-ruff
     @echo "Formatting complete!"
 
 # Run both fix and check
