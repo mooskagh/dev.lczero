@@ -68,7 +68,7 @@
                 {% for artifact in row.artifacts %}
                 <td class="artifact-cell">
                     {% if artifact %}
-                        <a href="{% url 'artifacts:download' artifact.id %}" class="artifact-link">
+                        <a href="{{ artifact.download_url }}" download="{{ artifact.filename }}" class="artifact-link">
                             {{ artifact.filename }}
                             <span class="file-size">({{ artifact.size|filesizeformat }})</span>
                         </a>

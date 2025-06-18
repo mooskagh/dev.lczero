@@ -6,13 +6,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.core.files.uploadedfile import UploadedFile
-from django.http import (
-    Http404,
-    HttpRequest,
-    HttpResponseRedirect,
-    JsonResponse,
-)
-from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpRequest, JsonResponse
+from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -174,22 +169,6 @@ class UploadView(View):
             return JsonResponse(
                 {"error": f"Upload failed: {str(e)}"}, status=500
             )
-
-
-class DownloadView(View):
-    def get(
-        self, request: HttpRequest, artifact_id: int
-    ) -> HttpResponseRedirect:
-        artifact = get_object_or_404(Artifact, id=artifact_id)
-
-        if artifact.revision.is_hidden:
-            raise Http404("Artifact not found")
-
-        full_path = ensure_directory_exists(artifact.file_path)
-        if not full_path.exists():
-            raise Http404("File not found")
-
-        return HttpResponseRedirect(artifact.download_url)
 
 
 def artifacts_table_view(request: HttpRequest):
