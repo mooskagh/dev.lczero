@@ -7,28 +7,28 @@ default:
 # Django system checks
 check-django:
     @echo "Running Django system checks..."
-    cd lczero_dev_portal && python manage.py check --verbosity=2
+    cd src && python manage.py check --verbosity=2
 
 # Run ruff linting
 check-ruff:
     @echo "Running ruff linting..."
-    ruff check lczero_dev_portal
+    ruff check src
 
 # Run mypy type checking
 check-mypy:
     @echo "Running mypy..."
-    mypy lczero_dev_portal
+    mypy src
 
 # Run Django tests
 check-tests:
     @echo "Running Django tests..."
-    cd lczero_dev_portal && python manage.py test
+    cd src && python manage.py test
 
 # Run ruff formatting and import sorting
 fix-ruff:
     @echo "Running ruff formatting..."
-    ruff format lczero_dev_portal
-    ruff check --fix lczero_dev_portal
+    ruff format src
+    ruff check --fix src
 
 # Run all read-only checks
 check: check-django check-ruff check-mypy check-tests

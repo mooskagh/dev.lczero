@@ -182,7 +182,7 @@ LOGOUT_REDIRECT_URL = "/"
 
 # Artifacts configuration
 ARTIFACTS_STORAGE_PATH = env.str(
-    "ARTIFACTS_STORAGE_PATH", str(BASE_DIR / "tmp" / "artifact_storage")
+    "ARTIFACTS_STORAGE_PATH", str(BASE_DIR.parent / "tmp" / "artifact_storage")
 )
 ARTIFACTS_UPLOAD_TOKEN = env.str(
     "ARTIFACTS_UPLOAD_TOKEN", default="dev-token-change-in-production"
